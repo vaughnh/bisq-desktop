@@ -24,7 +24,7 @@ import io.bisq.gui.Navigation;
 import io.bisq.gui.common.model.Activatable;
 import io.bisq.gui.common.view.*;
 import io.bisq.gui.main.MainView;
-import io.bisq.gui.main.dao.compensation.CompensationView;
+import io.bisq.gui.main.dao.request.RequestView;
 import io.bisq.gui.main.dao.voting.VotingView;
 import io.bisq.gui.main.dao.wallet.BsqWalletView;
 import io.bisq.gui.main.dao.wallet.dashboard.BsqDashboardView;
@@ -92,7 +92,7 @@ public class DaoView extends ActivatableViewAndModel<TabPane, Activatable> {
                     navigation.navigateTo(MainView.class, DaoView.class, BsqWalletView.class, selectedViewClass);
             } else if (newValue == compensationTab) {
                 //noinspection unchecked
-                navigation.navigateTo(MainView.class, DaoView.class, CompensationView.class);
+                navigation.navigateTo(MainView.class, DaoView.class, RequestView.class);
             } else if (newValue == votingTab) {
                 //noinspection unchecked
                 navigation.navigateTo(MainView.class, DaoView.class, VotingView.class);
@@ -112,7 +112,7 @@ public class DaoView extends ActivatableViewAndModel<TabPane, Activatable> {
                 navigation.navigateTo(MainView.class, DaoView.class, BsqWalletView.class);
             else if (selectedItem == compensationTab)
                 //noinspection unchecked
-                navigation.navigateTo(MainView.class, DaoView.class, CompensationView.class);
+                navigation.navigateTo(MainView.class, DaoView.class, RequestView.class);
             else if (selectedItem == votingTab)
                 //noinspection unchecked
                 navigation.navigateTo(MainView.class, DaoView.class, VotingView.class);
@@ -130,7 +130,7 @@ public class DaoView extends ActivatableViewAndModel<TabPane, Activatable> {
         if (view instanceof BsqWalletView) {
             selectedTab = bsqWalletTab;
             bsqWalletView = (BsqWalletView) view;
-        } else if (view instanceof CompensationView) {
+        } else if (view instanceof RequestView) {
             selectedTab = compensationTab;
         } else if (view instanceof VotingView) {
             selectedTab = votingTab;

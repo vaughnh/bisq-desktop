@@ -15,7 +15,7 @@
  * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.gui.main.dao.compensation.create;
+package io.bisq.gui.main.dao.request.create;
 
 import com.google.common.util.concurrent.FutureCallback;
 import io.bisq.common.crypto.KeyRing;
@@ -34,7 +34,7 @@ import io.bisq.core.provider.fee.FeeService;
 import io.bisq.core.util.CoinUtil;
 import io.bisq.gui.common.view.ActivatableView;
 import io.bisq.gui.common.view.FxmlView;
-import io.bisq.gui.main.dao.compensation.CompensationRequestDisplay;
+import io.bisq.gui.main.dao.request.RequestDisplay;
 import io.bisq.gui.main.overlays.popups.Popup;
 import io.bisq.gui.util.BSFormatter;
 import io.bisq.gui.util.BsqFormatter;
@@ -58,9 +58,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static io.bisq.gui.util.FormBuilder.addButtonAfterGroup;
 
 @FxmlView
-public class CreateCompensationRequestView extends ActivatableView<GridPane, Void> {
+public class CreateRequestView extends ActivatableView<GridPane, Void> {
 
-    private CompensationRequestDisplay compensationRequestDisplay;
+    private RequestDisplay requestDisplay;
     private Button createButton;
 
     private final BsqWalletService bsqWalletService;
@@ -79,15 +79,15 @@ public class CreateCompensationRequestView extends ActivatableView<GridPane, Voi
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     @Inject
-    private CreateCompensationRequestView(BsqWalletService bsqWalletService,
-                                          BtcWalletService btcWalletService,
-                                          WalletsSetup walletsSetup,
-                                          P2PService p2PService,
-                                          FeeService feeService,
-                                          CompensationRequestManager compensationRequestManager,
-                                          KeyRing keyRing,
-                                          BSFormatter btcFormatter,
-                                          BsqFormatter bsqFormatter) {
+    private CreateRequestView(BsqWalletService bsqWalletService,
+                              BtcWalletService btcWalletService,
+                              WalletsSetup walletsSetup,
+                              P2PService p2PService,
+                              FeeService feeService,
+                              CompensationRequestManager compensationRequestManager,
+                              KeyRing keyRing,
+                              BSFormatter btcFormatter,
+                              BsqFormatter bsqFormatter) {
         this.bsqWalletService = bsqWalletService;
         this.btcWalletService = btcWalletService;
         this.walletsSetup = walletsSetup;
@@ -103,14 +103,14 @@ public class CreateCompensationRequestView extends ActivatableView<GridPane, Voi
 
     @Override
     public void initialize() {
-        compensationRequestDisplay = new CompensationRequestDisplay(root, bsqFormatter, bsqWalletService, feeService);
-        compensationRequestDisplay.createAllFields(Res.get("dao.compensation.create.createNew"), 0);
-        createButton = addButtonAfterGroup(root, compensationRequestDisplay.incrementAndGetGridRow(), Res.get("dao.compensation.create.create.button"));
+        requestDisplay = new RequestDisplay(root, bsqFormatter, bsqWalletService, feeService);
+        requestDisplay.createAllFields(Res.get("dao.compensation.create.createNew"), 0);
+        createButton = addButtonAfterGroup(root, requestDisplay.incrementAndGetGridRow(), Res.get("dao.compensation.create.create.button"));
     }
 
     @Override
     protected void activate() {
-        compensationRequestDisplay.fillWithMock();
+        requestDisplay.fillWithMock();
 
         createButton.setOnAction(event -> {
             // TODO break up in methods
@@ -119,12 +119,12 @@ public class CreateCompensationRequestView extends ActivatableView<GridPane, Voi
                 checkNotNull(nodeAddress, "nodeAddress must not be null");
                 CompensationRequestPayload compensationRequestPayload = new CompensationRequestPayload(
                         UUID.randomUUID().toString(),
-                        compensationRequestDisplay.nameTextField.getText(),
-                        compensationRequestDisplay.titleTextField.getText(),
-                        compensationRequestDisplay.descriptionTextArea.getText(),
-                        compensationRequestDisplay.linkInputTextField.getText(),
-                        bsqFormatter.parseToCoin(compensationRequestDisplay.requestedBsqTextField.getText()),
-                        compensationRequestDisplay.bsqAddressTextField.getText(),
+                        requestDisplay.nameTextField.getText(),
+                        requestDisplay.titleTextField.getText(),
+                        requestDisplay.descriptionTextArea.getText(),
+                        requestDisplay.linkInputTextField.getText(),
+                        bsqFormatter.parseToCoin(requestDisplay.requestedBsqTextField.getText()),
+                        requestDisplay.bsqAddressTextField.getText(),
                         nodeAddress,
                         p2pStorageSignaturePubKey,
                         new Date()
@@ -146,7 +146,7 @@ public class CreateCompensationRequestView extends ActivatableView<GridPane, Voi
                                 compensationRequestManager.commitCompensationRequest(compensationRequest, new FutureCallback<Transaction>() {
                                     @Override
                                     public void onSuccess(@Nullable Transaction transaction) {
-                                        compensationRequestDisplay.clearForm();
+                                        requestDisplay.clearForm();
                                         new Popup<>().confirmation(Res.get("dao.tx.published.success")).show();
                                     }
 

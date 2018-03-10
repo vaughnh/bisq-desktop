@@ -22,12 +22,12 @@ import io.bisq.common.locale.Res;
 import io.bisq.core.btc.wallet.BsqWalletService;
 import io.bisq.core.dao.request.compensation.CompensationRequest;
 import io.bisq.core.dao.request.compensation.CompensationRequestPayload;
-import io.bisq.core.dao.vote.CompensationRequestVoteItem;
+import io.bisq.core.dao.vote.outdated.CompensationRequestVoteItem;
 import io.bisq.gui.components.AutoTooltipButton;
 import io.bisq.gui.components.AutoTooltipCheckBox;
 import io.bisq.gui.components.HyperlinkWithIcon;
 import io.bisq.gui.main.MainView;
-import io.bisq.gui.main.dao.compensation.CompensationRequestDisplay;
+import io.bisq.gui.main.dao.request.RequestDisplay;
 import io.bisq.gui.util.BsqFormatter;
 import io.bisq.gui.util.Layout;
 import javafx.beans.property.DoubleProperty;
@@ -116,10 +116,10 @@ public class CompensationViewItem {
             AnchorPane.setLeftAnchor(gridPane, 25d);
             AnchorPane.setTopAnchor(gridPane, -20d);
 
-            CompensationRequestDisplay compensationRequestDisplay = new CompensationRequestDisplay(gridPane, bsqFormatter, bsqWalletService, null);
-            compensationRequestDisplay.createAllFields(Res.get("dao.voting.item.title"), Layout.GROUP_DISTANCE);
-            compensationRequestDisplay.setAllFieldsEditable(false);
-            compensationRequestDisplay.fillWithData(compensationRequestPayload);
+            RequestDisplay requestDisplay = new RequestDisplay(gridPane, bsqFormatter, bsqWalletService, null);
+            requestDisplay.createAllFields(Res.get("dao.voting.item.title"), Layout.GROUP_DISTANCE);
+            requestDisplay.setAllFieldsEditable(false);
+            requestDisplay.fillWithData(compensationRequestPayload);
 
             Scene scene = new Scene(anchorPane);
             scene.getStylesheets().setAll(

@@ -27,7 +27,7 @@ import io.bisq.core.btc.wallet.BtcWalletService;
 import io.bisq.core.btc.wallet.WalletsSetup;
 import io.bisq.core.dao.request.compensation.CompensationRequest;
 import io.bisq.core.dao.request.compensation.CompensationRequestManager;
-import io.bisq.core.dao.vote.*;
+import io.bisq.core.dao.vote.outdated.*;
 import io.bisq.core.provider.fee.FeeService;
 import io.bisq.core.util.CoinUtil;
 import io.bisq.gui.common.view.ActivatableView;

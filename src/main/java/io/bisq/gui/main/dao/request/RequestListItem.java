@@ -15,7 +15,7 @@
  * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.gui.main.dao.compensation;
+package io.bisq.gui.main.dao.request;
 
 import io.bisq.common.locale.Res;
 import io.bisq.core.btc.listeners.TxConfidenceListener;
@@ -42,7 +42,7 @@ import java.util.Optional;
 @ToString
 @Slf4j
 @EqualsAndHashCode
-public class CompensationRequestListItem implements BsqBlockChainListener {
+public class RequestListItem implements BsqBlockChainListener {
     @Getter
     private final CompensationRequest compensationRequest;
     private final BsqWalletService bsqWalletService;
@@ -59,11 +59,11 @@ public class CompensationRequestListItem implements BsqBlockChainListener {
     private Tooltip tooltip = new Tooltip(Res.get("confidence.unknown"));
     private Transaction walletTransaction;
 
-    public CompensationRequestListItem(CompensationRequest compensationRequest,
-                                       BsqWalletService bsqWalletService,
-                                       BsqBlockChain bsqBlockChain,
-                                       BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
-                                       BsqFormatter bsqFormatter) {
+    public RequestListItem(CompensationRequest compensationRequest,
+                           BsqWalletService bsqWalletService,
+                           BsqBlockChain bsqBlockChain,
+                           BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
+                           BsqFormatter bsqFormatter) {
         this.compensationRequest = compensationRequest;
         this.bsqWalletService = bsqWalletService;
         this.bsqBlockChain = bsqBlockChain;

@@ -15,7 +15,7 @@
  * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.gui.main.dao.compensation;
+package io.bisq.gui.main.dao.request;
 
 import io.bisq.common.UserThread;
 import io.bisq.common.locale.Res;
@@ -45,22 +45,22 @@ import javax.inject.Inject;
 import java.util.stream.Collectors;
 
 @FxmlView
-public abstract class CompensationRequestView extends ActivatableView<GridPane, Void> implements BsqBlockChainListener {
+public abstract class BaseRequestView extends ActivatableView<GridPane, Void> implements BsqBlockChainListener {
 
     protected final CompensationRequestManager compensationRequestManger;
     protected final BsqBlockChain bsqBlockChain;
-    protected final ObservableList<CompensationRequestListItem> observableList = FXCollections.observableArrayList();
-    protected TableView<CompensationRequestListItem> tableView;
+    protected final ObservableList<RequestListItem> observableList = FXCollections.observableArrayList();
+    protected TableView<RequestListItem> tableView;
     protected final BsqWalletService bsqWalletService;
     protected final BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher;
     protected final BsqFormatter bsqFormatter;
-    protected SortedList<CompensationRequestListItem> sortedList = new SortedList<>(observableList);
+    protected SortedList<RequestListItem> sortedList = new SortedList<>(observableList);
     protected Subscription selectedCompensationRequestSubscription;
-    protected CompensationRequestDisplay compensationRequestDisplay;
+    protected RequestDisplay requestDisplay;
     protected int gridRow = 0;
     protected GridPane detailsGridPane, gridPane;
     protected SplitPane compensationRequestPane;
-    protected CompensationRequestListItem selectedCompensationRequest;
+    protected RequestListItem selectedCompensationRequest;
     protected ChangeListener<Number> chainHeightChangeListener;
     protected ListChangeListener<CompensationRequest> compensationRequestListChangeListener;
 
@@ -70,11 +70,11 @@ public abstract class CompensationRequestView extends ActivatableView<GridPane, 
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     @Inject
-    protected CompensationRequestView(CompensationRequestManager compensationRequestManger,
-                                      BsqWalletService bsqWalletService,
-                                      BsqBlockChain bsqBlockChain,
-                                      BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
-                                      BsqFormatter bsqFormatter) {
+    protected BaseRequestView(CompensationRequestManager compensationRequestManger,
+                              BsqWalletService bsqWalletService,
+                              BsqBlockChain bsqBlockChain,
+                              BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
+                              BsqFormatter bsqFormatter) {
         this.compensationRequestManger = compensationRequestManger;
         this.bsqWalletService = bsqWalletService;
         this.bsqBlockChain = bsqBlockChain;
@@ -104,7 +104,7 @@ public abstract class CompensationRequestView extends ActivatableView<GridPane, 
         bsqBlockChainChangeDispatcher.removeBsqBlockChainListener(this);
         compensationRequestManger.getAllRequests().removeListener(compensationRequestListChangeListener);
 
-        observableList.forEach(CompensationRequestListItem::cleanup);
+        observableList.forEach(RequestListItem::cleanup);
     }
 
 
@@ -126,24 +126,24 @@ public abstract class CompensationRequestView extends ActivatableView<GridPane, 
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     protected void doUpdateList(FilteredList<CompensationRequest> list) {
-        observableList.forEach(CompensationRequestListItem::cleanup);
+        observableList.forEach(RequestListItem::cleanup);
 
         observableList.setAll(list.stream()
-                .map(e -> new CompensationRequestListItem(e, bsqWalletService, bsqBlockChain, bsqBlockChainChangeDispatcher, bsqFormatter))
+                .map(e -> new RequestListItem(e, bsqWalletService, bsqBlockChain, bsqBlockChainChangeDispatcher, bsqFormatter))
                 .collect(Collectors.toSet()));
 
-        if (list.isEmpty() && compensationRequestDisplay != null)
-            compensationRequestDisplay.removeAllFields();
+        if (list.isEmpty() && requestDisplay != null)
+            requestDisplay.removeAllFields();
     }
 
-    protected void onSelectCompensationRequest(CompensationRequestListItem item) {
+    protected void onSelectCompensationRequest(RequestListItem item) {
         selectedCompensationRequest = item;
         if (item != null) {
             final CompensationRequest compensationRequest = item.getCompensationRequest();
-            compensationRequestDisplay.removeAllFields();
-            compensationRequestDisplay.createAllFields(Res.get("dao.compensation.selectedRequest"), Layout.GROUP_DISTANCE);
-            compensationRequestDisplay.setAllFieldsEditable(false);
-            compensationRequestDisplay.fillWithData(compensationRequest.getPayload());
+            requestDisplay.removeAllFields();
+            requestDisplay.createAllFields(Res.get("dao.compensation.selectedRequest"), Layout.GROUP_DISTANCE);
+            requestDisplay.setAllFieldsEditable(false);
+            requestDisplay.fillWithData(compensationRequest.getPayload());
         }
     }
 }

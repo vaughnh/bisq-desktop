@@ -15,7 +15,7 @@
  * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.gui.main.dao.compensation.past;
+package io.bisq.gui.main.dao.request.past;
 
 import io.bisq.common.locale.Res;
 import io.bisq.core.btc.wallet.BsqWalletService;
@@ -26,8 +26,8 @@ import io.bisq.core.dao.blockchain.BsqBlockChainListener;
 import io.bisq.core.dao.request.compensation.CompensationRequestManager;
 import io.bisq.gui.common.view.FxmlView;
 import io.bisq.gui.components.SeparatedPhaseBars;
-import io.bisq.gui.main.dao.compensation.CompensationRequestDisplay;
-import io.bisq.gui.main.dao.compensation.CompensationRequestView;
+import io.bisq.gui.main.dao.request.BaseRequestView;
+import io.bisq.gui.main.dao.request.RequestDisplay;
 import io.bisq.gui.util.BsqFormatter;
 import javafx.geometry.Insets;
 import javafx.scene.control.TableView;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 @FxmlView
-public class PastCompensationRequestView extends CompensationRequestView implements BsqBlockChainListener {
+public class PastRequestView extends BaseRequestView implements BsqBlockChainListener {
 
     private List<SeparatedPhaseBars.SeparatedPhaseBarsItem> phaseBarsItems;
 
@@ -48,12 +48,12 @@ public class PastCompensationRequestView extends CompensationRequestView impleme
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     @Inject
-    private PastCompensationRequestView(CompensationRequestManager compensationRequestManger,
-                                        DaoPeriodService daoPeriodService,
-                                        BsqWalletService bsqWalletService,
-                                        BsqBlockChain bsqBlockChain,
-                                        BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
-                                        BsqFormatter bsqFormatter) {
+    private PastRequestView(CompensationRequestManager compensationRequestManger,
+                            DaoPeriodService daoPeriodService,
+                            BsqWalletService bsqWalletService,
+                            BsqBlockChain bsqBlockChain,
+                            BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
+                            BsqFormatter bsqFormatter) {
         super(compensationRequestManger, bsqWalletService, bsqBlockChain, bsqBlockChainChangeDispatcher, bsqFormatter);
     }
 
@@ -75,8 +75,8 @@ public class PastCompensationRequestView extends CompensationRequestView impleme
         // Add compensationrequest pane
         tableView = new TableView<>();
         detailsGridPane = new GridPane();
-        compensationRequestDisplay = new CompensationRequestDisplay(detailsGridPane, bsqFormatter, bsqWalletService, null);
-        compensationRequestPane = compensationRequestDisplay.createCompensationRequestPane(tableView, Res.get("dao.compensation.past.header"));
+        requestDisplay = new RequestDisplay(detailsGridPane, bsqFormatter, bsqWalletService, null);
+        compensationRequestPane = requestDisplay.createCompensationRequestPane(tableView, Res.get("dao.compensation.past.header"));
         compensationRequestPane.setMinWidth(800);
         GridPane.setColumnSpan(compensationRequestPane, 2);
         GridPane.setColumnIndex(compensationRequestPane, 0);
