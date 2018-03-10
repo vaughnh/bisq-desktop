@@ -15,7 +15,7 @@
  * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.gui.main.dao.compensation.active;
+package io.bisq.gui.main.dao.request.proposed;
 
 import io.bisq.common.locale.Res;
 import io.bisq.core.btc.wallet.BsqWalletService;
@@ -31,9 +31,9 @@ import io.bisq.gui.common.view.FxmlView;
 import io.bisq.gui.components.SeparatedPhaseBars;
 import io.bisq.gui.main.MainView;
 import io.bisq.gui.main.dao.DaoView;
-import io.bisq.gui.main.dao.compensation.CompensationRequestDisplay;
-import io.bisq.gui.main.dao.compensation.CompensationRequestListItem;
-import io.bisq.gui.main.dao.compensation.CompensationRequestView;
+import io.bisq.gui.main.dao.request.BaseRequestView;
+import io.bisq.gui.main.dao.request.RequestDisplay;
+import io.bisq.gui.main.dao.request.RequestListItem;
 import io.bisq.gui.main.dao.voting.VotingView;
 import io.bisq.gui.main.dao.voting.vote.VoteView;
 import io.bisq.gui.main.overlays.popups.Popup;
@@ -56,7 +56,7 @@ import static io.bisq.gui.util.FormBuilder.addButtonAfterGroup;
 import static io.bisq.gui.util.FormBuilder.addTitledGroupBg;
 
 @FxmlView
-public class ActiveCompensationRequestView extends CompensationRequestView implements BsqBlockChainListener {
+public class ProposedRequestView extends BaseRequestView implements BsqBlockChainListener {
 
     private List<SeparatedPhaseBars.SeparatedPhaseBarsItem> phaseBarsItems;
     private Button removeButton, voteButton;
@@ -71,14 +71,14 @@ public class ActiveCompensationRequestView extends CompensationRequestView imple
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     @Inject
-    private ActiveCompensationRequestView(CompensationRequestManager compensationRequestManger,
-                                          DaoPeriodService daoPeriodService,
-                                          BsqWalletService bsqWalletService,
-                                          BsqBlockChain bsqBlockChain,
-                                          FeeService feeService,
-                                          BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
-                                          Navigation navigation,
-                                          BsqFormatter bsqFormatter) {
+    private ProposedRequestView(CompensationRequestManager compensationRequestManger,
+                                DaoPeriodService daoPeriodService,
+                                BsqWalletService bsqWalletService,
+                                BsqBlockChain bsqBlockChain,
+                                FeeService feeService,
+                                BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
+                                Navigation navigation,
+                                BsqFormatter bsqFormatter) {
         super(compensationRequestManger, bsqWalletService, bsqBlockChain, bsqBlockChainChangeDispatcher, bsqFormatter);
         this.daoPeriodService = daoPeriodService;
         this.navigation = navigation;
@@ -116,8 +116,8 @@ public class ActiveCompensationRequestView extends CompensationRequestView imple
         // Add compensationrequest pane
         tableView = new TableView<>();
         detailsGridPane = new GridPane();
-        compensationRequestDisplay = new CompensationRequestDisplay(detailsGridPane, bsqFormatter, bsqWalletService, null);
-        compensationRequestPane = compensationRequestDisplay.createCompensationRequestPane(tableView, Res.get("dao.compensation.active.header"));
+        requestDisplay = new RequestDisplay(detailsGridPane, bsqFormatter, bsqWalletService, null);
+        compensationRequestPane = requestDisplay.createCompensationRequestPane(tableView, Res.get("dao.compensation.active.header"));
         GridPane.setColumnSpan(compensationRequestPane, 2);
         GridPane.setMargin(compensationRequestPane, new Insets(Layout.FIRST_ROW_DISTANCE - 6, -10, 0, -10));
         GridPane.setRowIndex(compensationRequestPane, ++gridRow);
@@ -165,6 +165,7 @@ public class ActiveCompensationRequestView extends CompensationRequestView imple
         });
 
         daoPeriodService.getPhaseProperty().addListener(phaseChangeListener);
+        onPhaseChanged(daoPeriodService.getPhaseProperty().get());
         onChainHeightChanged(bsqWalletService.getChainHeightProperty().get());
     }
 
@@ -197,7 +198,7 @@ public class ActiveCompensationRequestView extends CompensationRequestView imple
         });
     }
 
-    protected void onSelectCompensationRequest(CompensationRequestListItem item) {
+    protected void onSelectCompensationRequest(RequestListItem item) {
         super.onSelectCompensationRequest(item);
         if (item != null) {
             if (removeButton != null) {
@@ -220,16 +221,16 @@ public class ActiveCompensationRequestView extends CompensationRequestView imple
             removeButton.setVisible(false);
             removeButton = null;
         }
-        if (selectedCompensationRequest != null && compensationRequestDisplay != null) {
+        if (selectedCompensationRequest != null && requestDisplay != null) {
             final CompensationRequest compensationRequest = selectedCompensationRequest.getCompensationRequest();
             switch (phase) {
                 case COMPENSATION_REQUESTS:
                     if (compensationRequestManger.isMine(compensationRequest)) {
                         if (removeButton == null) {
-                            removeButton = addButtonAfterGroup(detailsGridPane, compensationRequestDisplay.incrementAndGetGridRow(), Res.get("dao.compensation.active.remove"));
+                            removeButton = addButtonAfterGroup(detailsGridPane, requestDisplay.incrementAndGetGridRow(), Res.get("dao.compensation.active.remove"));
                             removeButton.setOnAction(event -> {
                                 if (compensationRequestManger.removeCompensationRequest(compensationRequest))
-                                    compensationRequestDisplay.removeAllFields();
+                                    requestDisplay.removeAllFields();
                                 else
                                     new Popup<>().warning(Res.get("dao.compensation.active.remove.failed")).show();
                             });
@@ -243,7 +244,7 @@ public class ActiveCompensationRequestView extends CompensationRequestView imple
                     break;
                 case OPEN_FOR_VOTING:
                     if (voteButton == null) {
-                        voteButton = addButtonAfterGroup(detailsGridPane, compensationRequestDisplay.incrementAndGetGridRow(), Res.get("dao.compensation.active.vote"));
+                        voteButton = addButtonAfterGroup(detailsGridPane, requestDisplay.incrementAndGetGridRow(), Res.get("dao.compensation.active.vote"));
                         voteButton.setOnAction(event -> {
                             //noinspection unchecked
                             navigation.navigateTo(MainView.class, DaoView.class, VotingView.class, VoteView.class);
