@@ -17,9 +17,14 @@
   ~ along with Bisq. If not, see <http://www.gnu.org/licenses/>.
   -->
 
+
 <?import javafx.scene.layout.*?>
-<GridPane fx:id="root" fx:controller="io.bisq.gui.main.dao.request.past.PastRequestView"
-          AnchorPane.bottomAnchor="-20.0" AnchorPane.leftAnchor="-10.0"
-          AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="-20.0"
+<GridPane fx:id="root" fx:controller="io.bisq.gui.main.dao.proposal.active.ActiveProposalsView"
+          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0.0"
           xmlns:fx="http://javafx.com/fxml">
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" minWidth="300.0"/>
+    </columnConstraints>
 </GridPane>

@@ -17,9 +17,8 @@
   ~ along with Bisq. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-
 <?import javafx.scene.layout.*?>
-<GridPane fx:id="root" fx:controller="io.bisq.gui.main.dao.request.proposed.ProposedRequestView"
+<GridPane fx:id="root" fx:controller="io.bisq.gui.main.dao.proposal.dashboard.ProposalDashboardView"
           AnchorPane.bottomAnchor="-20.0" AnchorPane.leftAnchor="-10.0"
           AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="-20.0"
           xmlns:fx="http://javafx.com/fxml">

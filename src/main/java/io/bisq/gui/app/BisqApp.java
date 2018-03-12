@@ -46,8 +46,7 @@ import io.bisq.core.btc.AddressEntryList;
 import io.bisq.core.btc.BaseCurrencyNetwork;
 import io.bisq.core.btc.wallet.*;
 import io.bisq.core.dao.DaoManager;
-import io.bisq.core.dao.request.compensation.CompensationRequestManager;
-import io.bisq.core.dao.vote.outdated.VotingManager;
+import io.bisq.core.dao.proposal.ProposalCollectionsManager;
 import io.bisq.core.filter.FilterManager;
 import io.bisq.core.offer.OpenOfferManager;
 import io.bisq.core.trade.TradeManager;
@@ -204,8 +203,7 @@ public class BisqApp extends Application {
             persistedDataHosts.add(injector.getInstance(FailedTradesManager.class));
             persistedDataHosts.add(injector.getInstance(DisputeManager.class));
             persistedDataHosts.add(injector.getInstance(P2PService.class));
-            persistedDataHosts.add(injector.getInstance(VotingManager.class));
-            persistedDataHosts.add(injector.getInstance(CompensationRequestManager.class));
+            persistedDataHosts.add(injector.getInstance(ProposalCollectionsManager.class));
 
             // we apply at startup the reading of persisted data but don't want to get it triggered in the constructor
             persistedDataHosts.forEach(e -> {

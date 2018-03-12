@@ -23,7 +23,7 @@ import io.bisq.gui.Navigation;
 import io.bisq.gui.common.view.View;
 import io.bisq.gui.main.MainView;
 import io.bisq.gui.main.dao.DaoView;
-import io.bisq.gui.main.dao.request.RequestView;
+import io.bisq.gui.main.dao.proposal.ProposalView;
 import io.bisq.gui.util.Colors;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
@@ -82,7 +82,7 @@ public class MenuItem extends AutoTooltipToggleButton {
 
     public void activate() {
         //noinspection unchecked
-        setOnAction((event) -> navigation.navigateTo(MainView.class, DaoView.class, RequestView.class, viewClass));
+        setOnAction((event) -> navigation.navigateTo(MainView.class, DaoView.class, ProposalView.class, viewClass));
         selectedProperty().addListener(selectedPropertyChangeListener);
         disableProperty().addListener(disablePropertyChangeListener);
     }

@@ -15,7 +15,7 @@
  * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.gui.main.dao.request;
+package io.bisq.gui.main.dao.proposal;
 
 import de.jensd.fx.fontawesome.AwesomeIcon;
 import io.bisq.common.locale.Res;
@@ -23,11 +23,10 @@ import io.bisq.gui.Navigation;
 import io.bisq.gui.common.view.*;
 import io.bisq.gui.components.MenuItem;
 import io.bisq.gui.main.dao.DaoView;
-import io.bisq.gui.main.dao.request.create.CreateRequestView;
-import io.bisq.gui.main.dao.request.dashboard.RequestDashboardView;
-import io.bisq.gui.main.dao.request.open.OpenForVoteRequestView;
-import io.bisq.gui.main.dao.request.past.PastRequestView;
-import io.bisq.gui.main.dao.request.proposed.ProposedRequestView;
+import io.bisq.gui.main.dao.proposal.active.ActiveProposalsView;
+import io.bisq.gui.main.dao.proposal.closed.ClosedProposalsView;
+import io.bisq.gui.main.dao.proposal.dashboard.ProposalDashboardView;
+import io.bisq.gui.main.dao.proposal.make.MakeProposalView;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
@@ -36,12 +35,12 @@ import javafx.scene.layout.VBox;
 import javax.inject.Inject;
 
 @FxmlView
-public class RequestView extends ActivatableViewAndModel {
+public class ProposalView extends ActivatableViewAndModel {
 
     private final ViewLoader viewLoader;
     private final Navigation navigation;
 
-    private MenuItem dashboard, create, proposed, openForVote, past;
+    private MenuItem dashboard, create, proposed, past;
     private Navigation.Listener listener;
 
     @FXML
@@ -52,7 +51,7 @@ public class RequestView extends ActivatableViewAndModel {
     private Class<? extends View> selectedViewClass;
 
     @Inject
-    private RequestView(CachingViewLoader viewLoader, Navigation navigation) {
+    private ProposalView(CachingViewLoader viewLoader, Navigation navigation) {
         this.viewLoader = viewLoader;
         this.navigation = navigation;
     }
@@ -60,7 +59,7 @@ public class RequestView extends ActivatableViewAndModel {
     @Override
     public void initialize() {
         listener = viewPath -> {
-            if (viewPath.size() != 4 || viewPath.indexOf(RequestView.class) != 2)
+            if (viewPath.size() != 4 || viewPath.indexOf(ProposalView.class) != 2)
                 return;
 
             selectedViewClass = viewPath.tip();
@@ -68,12 +67,11 @@ public class RequestView extends ActivatableViewAndModel {
         };
 
         ToggleGroup toggleGroup = new ToggleGroup();
-        dashboard = new MenuItem(navigation, toggleGroup, Res.get("shared.dashboard"), RequestDashboardView.class, AwesomeIcon.DASHBOARD);
-        create = new MenuItem(navigation, toggleGroup, Res.get("dao.compensation.menuItem.createRequest"), CreateRequestView.class, AwesomeIcon.EDIT);
-        proposed = new MenuItem(navigation, toggleGroup, Res.get("dao.compensation.menuItem.proposedRequests"), ProposedRequestView.class, AwesomeIcon.STACKEXCHANGE);
-        openForVote = new MenuItem(navigation, toggleGroup, Res.get("dao.compensation.menuItem.requestsForVote"), OpenForVoteRequestView.class, AwesomeIcon.PENCIL);
-        past = new MenuItem(navigation, toggleGroup, Res.get("dao.compensation.menuItem.pastRequests"), PastRequestView.class, AwesomeIcon.LIST);
-        leftVBox.getChildren().addAll(dashboard, create, proposed, openForVote, past);
+        dashboard = new MenuItem(navigation, toggleGroup, Res.get("shared.dashboard"), ProposalDashboardView.class, AwesomeIcon.DASHBOARD);
+        create = new MenuItem(navigation, toggleGroup, Res.get("dao.proposal.menuItem.make"), MakeProposalView.class, AwesomeIcon.EDIT);
+        proposed = new MenuItem(navigation, toggleGroup, Res.get("dao.proposal.menuItem.active"), ActiveProposalsView.class, AwesomeIcon.STACKEXCHANGE);
+        past = new MenuItem(navigation, toggleGroup, Res.get("dao.proposal.menuItem.closed"), ClosedProposalsView.class, AwesomeIcon.LIST);
+        leftVBox.getChildren().addAll(dashboard, create, proposed, past);
     }
 
     @Override
@@ -81,19 +79,18 @@ public class RequestView extends ActivatableViewAndModel {
         dashboard.activate();
         create.activate();
         proposed.activate();
-        openForVote.activate();
         past.activate();
 
         navigation.addListener(listener);
         ViewPath viewPath = navigation.getCurrentPath();
-        if (viewPath.size() == 3 && viewPath.indexOf(RequestView.class) == 2 ||
+        if (viewPath.size() == 3 && viewPath.indexOf(ProposalView.class) == 2 ||
                 viewPath.size() == 2 && viewPath.indexOf(DaoView.class) == 1) {
             if (selectedViewClass == null)
-                selectedViewClass = CreateRequestView.class;
+                selectedViewClass = MakeProposalView.class;
 
             loadView(selectedViewClass);
 
-        } else if (viewPath.size() == 4 && viewPath.indexOf(RequestView.class) == 2) {
+        } else if (viewPath.size() == 4 && viewPath.indexOf(ProposalView.class) == 2) {
             selectedViewClass = viewPath.get(3);
             loadView(selectedViewClass);
         }
@@ -106,7 +103,6 @@ public class RequestView extends ActivatableViewAndModel {
         dashboard.deactivate();
         create.deactivate();
         proposed.deactivate();
-        openForVote.deactivate();
         past.deactivate();
     }
 
@@ -114,11 +110,10 @@ public class RequestView extends ActivatableViewAndModel {
         View view = viewLoader.load(viewClass);
         content.getChildren().setAll(view.getRoot());
 
-        if (view instanceof RequestDashboardView) dashboard.setSelected(true);
-        else if (view instanceof CreateRequestView) create.setSelected(true);
-        else if (view instanceof ProposedRequestView) proposed.setSelected(true);
-        else if (view instanceof OpenForVoteRequestView) openForVote.setSelected(true);
-        else if (view instanceof PastRequestView) past.setSelected(true);
+        if (view instanceof ProposalDashboardView) dashboard.setSelected(true);
+        else if (view instanceof MakeProposalView) create.setSelected(true);
+        else if (view instanceof ActiveProposalsView) proposed.setSelected(true);
+        else if (view instanceof ClosedProposalsView) past.setSelected(true);
     }
 
     public Class<? extends View> getSelectedViewClass() {

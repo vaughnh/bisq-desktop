@@ -24,7 +24,7 @@ import io.bisq.gui.Navigation;
 import io.bisq.gui.common.model.Activatable;
 import io.bisq.gui.common.view.*;
 import io.bisq.gui.main.MainView;
-import io.bisq.gui.main.dao.request.RequestView;
+import io.bisq.gui.main.dao.proposal.ProposalView;
 import io.bisq.gui.main.dao.voting.VotingView;
 import io.bisq.gui.main.dao.wallet.BsqWalletView;
 import io.bisq.gui.main.dao.wallet.dashboard.BsqDashboardView;
@@ -58,7 +58,7 @@ public class DaoView extends ActivatableViewAndModel<TabPane, Activatable> {
 
     @Override
     public void initialize() {
-        compensationTab = new Tab(Res.get("dao.tab.compensation"));
+        compensationTab = new Tab(Res.get("dao.tab.requests"));
         votingTab = new Tab(Res.get("dao.tab.voting"));
         compensationTab.setClosable(false);
         votingTab.setClosable(false);
@@ -92,7 +92,7 @@ public class DaoView extends ActivatableViewAndModel<TabPane, Activatable> {
                     navigation.navigateTo(MainView.class, DaoView.class, BsqWalletView.class, selectedViewClass);
             } else if (newValue == compensationTab) {
                 //noinspection unchecked
-                navigation.navigateTo(MainView.class, DaoView.class, RequestView.class);
+                navigation.navigateTo(MainView.class, DaoView.class, ProposalView.class);
             } else if (newValue == votingTab) {
                 //noinspection unchecked
                 navigation.navigateTo(MainView.class, DaoView.class, VotingView.class);
@@ -112,7 +112,7 @@ public class DaoView extends ActivatableViewAndModel<TabPane, Activatable> {
                 navigation.navigateTo(MainView.class, DaoView.class, BsqWalletView.class);
             else if (selectedItem == compensationTab)
                 //noinspection unchecked
-                navigation.navigateTo(MainView.class, DaoView.class, RequestView.class);
+                navigation.navigateTo(MainView.class, DaoView.class, ProposalView.class);
             else if (selectedItem == votingTab)
                 //noinspection unchecked
                 navigation.navigateTo(MainView.class, DaoView.class, VotingView.class);
@@ -130,7 +130,7 @@ public class DaoView extends ActivatableViewAndModel<TabPane, Activatable> {
         if (view instanceof BsqWalletView) {
             selectedTab = bsqWalletTab;
             bsqWalletView = (BsqWalletView) view;
-        } else if (view instanceof RequestView) {
+        } else if (view instanceof ProposalView) {
             selectedTab = compensationTab;
         } else if (view instanceof VotingView) {
             selectedTab = votingTab;

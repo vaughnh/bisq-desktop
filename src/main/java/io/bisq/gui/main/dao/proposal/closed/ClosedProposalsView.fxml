@@ -18,15 +18,12 @@
   -->
 
 <?import javafx.scene.layout.*?>
-<GridPane fx:id="root" fx:controller="io.bisq.gui.main.dao.request.dashboard.RequestDashboardView"
-          hgap="5.0" vgap="5.0"
+<GridPane fx:id="root" fx:controller="io.bisq.gui.main.dao.proposal.closed.ClosedProposalsView"
           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-10.0"
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0.0"
           xmlns:fx="http://javafx.com/fxml">
 
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" halignment="RIGHT" minWidth="140.0"/>
         <ColumnConstraints hgrow="ALWAYS" minWidth="300.0"/>
     </columnConstraints>
-
 </GridPane>

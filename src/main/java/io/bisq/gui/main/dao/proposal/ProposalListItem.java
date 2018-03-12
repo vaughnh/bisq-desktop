@@ -15,7 +15,7 @@
  * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.gui.main.dao.request;
+package io.bisq.gui.main.dao.proposal;
 
 import io.bisq.common.locale.Res;
 import io.bisq.core.btc.listeners.TxConfidenceListener;
@@ -24,7 +24,7 @@ import io.bisq.core.dao.blockchain.BsqBlockChain;
 import io.bisq.core.dao.blockchain.BsqBlockChainChangeDispatcher;
 import io.bisq.core.dao.blockchain.BsqBlockChainListener;
 import io.bisq.core.dao.blockchain.vo.Tx;
-import io.bisq.core.dao.request.compensation.CompensationRequest;
+import io.bisq.core.dao.proposal.Proposal;
 import io.bisq.gui.components.indicator.TxConfidenceIndicator;
 import io.bisq.gui.util.BsqFormatter;
 import javafx.beans.value.ChangeListener;
@@ -42,9 +42,9 @@ import java.util.Optional;
 @ToString
 @Slf4j
 @EqualsAndHashCode
-public class RequestListItem implements BsqBlockChainListener {
+public class ProposalListItem implements BsqBlockChainListener {
     @Getter
-    private final CompensationRequest compensationRequest;
+    private final Proposal proposal;
     private final BsqWalletService bsqWalletService;
     private final BsqBlockChain bsqBlockChain;
     private final BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher;
@@ -59,12 +59,12 @@ public class RequestListItem implements BsqBlockChainListener {
     private Tooltip tooltip = new Tooltip(Res.get("confidence.unknown"));
     private Transaction walletTransaction;
 
-    public RequestListItem(CompensationRequest compensationRequest,
-                           BsqWalletService bsqWalletService,
-                           BsqBlockChain bsqBlockChain,
-                           BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
-                           BsqFormatter bsqFormatter) {
-        this.compensationRequest = compensationRequest;
+    public ProposalListItem(Proposal proposal,
+                            BsqWalletService bsqWalletService,
+                            BsqBlockChain bsqBlockChain,
+                            BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher,
+                            BsqFormatter bsqFormatter) {
+        this.proposal = proposal;
         this.bsqWalletService = bsqWalletService;
         this.bsqBlockChain = bsqBlockChain;
         this.bsqBlockChainChangeDispatcher = bsqBlockChainChangeDispatcher;
@@ -91,15 +91,14 @@ public class RequestListItem implements BsqBlockChainListener {
     }
 
     private void setupConfidence() {
-        final Tx tx = bsqBlockChain.getTxMap().get(compensationRequest.getPayload().getTxId());
+        final Tx tx = bsqBlockChain.getTxMap().get(proposal.getProposalPayload().getTxId());
         if (tx != null) {
             final String txId = tx.getId();
 
             // We cache the walletTransaction once found
             if (walletTransaction == null) {
                 final Optional<Transaction> transactionOptional = bsqWalletService.isWalletTransaction(txId);
-                if (transactionOptional.isPresent())
-                    walletTransaction = transactionOptional.get();
+                transactionOptional.ifPresent(transaction -> walletTransaction = transaction);
             }
 
             if (walletTransaction != null) {
