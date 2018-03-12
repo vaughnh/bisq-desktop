@@ -5,7 +5,7 @@ import com.natpryce.makeiteasy.Property;
 
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
-import static org.bitcoinj.core.Coin.*;
+import static org.bitcoinj.core.Coin.valueOf;
 
 public class CoinMaker {
 
