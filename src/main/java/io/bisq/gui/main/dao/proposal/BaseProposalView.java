@@ -64,7 +64,7 @@ public abstract class BaseProposalView extends ActivatableView<GridPane, Void> i
     protected final BsqBlockChainChangeDispatcher bsqBlockChainChangeDispatcher;
     protected final BsqFormatter bsqFormatter;
     protected SortedList<ProposalListItem> sortedList = new SortedList<>(proposalListItems);
-    protected Subscription selectedVoteRequestSubscription;
+    protected Subscription selectedProposalSubscription;
     protected ProposalDisplay proposalDisplay;
     protected int gridRow = 0;
     protected GridPane detailsGridPane, gridPane;
@@ -143,7 +143,7 @@ public abstract class BaseProposalView extends ActivatableView<GridPane, Void> i
 
         sortedList.comparatorProperty().bind(tableView.comparatorProperty());
 
-        selectedVoteRequestSubscription = EasyBind.subscribe(tableView.getSelectionModel().selectedItemProperty(), this::onSelectProposal);
+        selectedProposalSubscription = EasyBind.subscribe(tableView.getSelectionModel().selectedItemProperty(), this::onSelectProposal);
 
         bsqBlockChainChangeDispatcher.addBsqBlockChainListener(this);
         proposalCollectionsManager.getAllProposals().addListener(proposalListChangeListener);
@@ -157,7 +157,7 @@ public abstract class BaseProposalView extends ActivatableView<GridPane, Void> i
 
         sortedList.comparatorProperty().unbind();
 
-        selectedVoteRequestSubscription.unsubscribe();
+        selectedProposalSubscription.unsubscribe();
 
         bsqBlockChainChangeDispatcher.removeBsqBlockChainListener(this);
         proposalCollectionsManager.getAllProposals().removeListener(proposalListChangeListener);
