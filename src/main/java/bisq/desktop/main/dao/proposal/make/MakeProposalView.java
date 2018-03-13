@@ -155,7 +155,8 @@ public class MakeProposalView extends ActivatableView<GridPane, Void> {
     @Override
     protected void deactivate() {
         proposalTypeComboBox.getSelectionModel().selectedItemProperty().removeListener(proposalTypeChangeListener);
-        createButton.setOnAction(null);
+        if (createButton != null)
+            createButton.setOnAction(null);
     }
 
     private void createCompensationRequest() {
@@ -260,7 +261,7 @@ public class MakeProposalView extends ActivatableView<GridPane, Void> {
             root.getChildren().remove(3, root.getChildren().size());
         }
         proposalDisplay = new ProposalDisplay(root, bsqFormatter, bsqWalletService, feeService);
-        proposalDisplay.createAllFields(Res.get("dao.proposal.create.createNew"), 1, Layout.GROUP_DISTANCE, selectedProposalType);
+        proposalDisplay.createAllFields(Res.get("dao.proposal.create.createNew"), 1, Layout.GROUP_DISTANCE, selectedProposalType, true);
         proposalDisplay.fillWithMock();
 
         createButton = addButtonAfterGroup(root, proposalDisplay.incrementAndGetGridRow(), Res.get("dao.proposal.create.create.button"));

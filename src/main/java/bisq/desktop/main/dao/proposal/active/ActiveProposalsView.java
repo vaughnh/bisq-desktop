@@ -224,23 +224,31 @@ public class ActiveProposalsView extends BaseProposalView {
     }
 
     private void onActionButton(Proposal proposal) {
-        if (isTxInVotePhase())
+        if (showVoteButton())
             onVote();
-        else if (isTxInRequestPhase())
+        else if (showRemoveButton())
             onRemove(proposal);
     }
 
     private boolean getActionButtonVisibility(Proposal proposal) {
-        return !proposal.isClosed() && (isTxInRequestPhase() || isTxInVotePhase());
+        return !proposal.isClosed() && (showRemoveButton() || showVoteButton());
     }
 
     private String getActionButtonIconStyle() {
         // TODO find better icon
-        return isTxInRequestPhase() ? "image-remove" : "image-tick";
+        return showRemoveButton() ? "image-remove" : "image-tick";
     }
 
     private String getActionButtonText() {
-        return isTxInRequestPhase() ? Res.get("shared.remove") : Res.get("shared.vote");
+        return showRemoveButton() ? Res.get("shared.remove") : Res.get("shared.vote");
+    }
+
+    private boolean showVoteButton() {
+        return isTxInVotePhase();
+    }
+
+    private boolean showRemoveButton() {
+        return isTxInRequestPhase() && selectedProposalListItem != null && proposalCollectionsManager.isMine(selectedProposalListItem.getProposal());
     }
 
     private boolean isTxInRequestPhase() {

@@ -61,6 +61,7 @@ public class ProposalDisplay {
     private int gridRow;
     public TextArea descriptionTextArea;
     private HyperlinkWithIcon linkHyperlinkWithIcon;
+    @Nullable
     private TxIdTextField txIdTextField;
     private FeeService feeService;
 
@@ -71,9 +72,15 @@ public class ProposalDisplay {
         this.feeService = feeService;
     }
 
-    public void createAllFields(String title, int index, double top, ProposalType proposalType) {
+    public void createAllFields(String title, int index, double top, ProposalType proposalType, boolean isMakeProposalScreen) {
         this.gridRow = index;
-        addTitledGroupBg(gridPane, gridRow, proposalType == ProposalType.COMPENSATION_REQUEST ? 8 : 6, title, top);
+        int rowSpan = 5;
+        if (proposalType == ProposalType.COMPENSATION_REQUEST)
+            rowSpan += 2;
+        if (!isMakeProposalScreen)
+            rowSpan += 1;
+
+        addTitledGroupBg(gridPane, gridRow, rowSpan, title, top);
         uidTextField = addLabelInputTextField(gridPane, gridRow, Res.getWithCol("shared.id"), top == Layout.GROUP_DISTANCE ? Layout.FIRST_ROW_AND_GROUP_DISTANCE : Layout.FIRST_ROW_DISTANCE).second;
         uidTextField.setEditable(false);
         nameTextField = addLabelInputTextField(gridPane, ++gridRow, Res.get("dao.proposal.display.name")).second;
@@ -102,8 +109,9 @@ public class ProposalDisplay {
             bsqAddressTextField.setValidator(new BsqAddressValidator(bsqFormatter));
         }
 
-        txIdTextField = addLabelTxIdTextField(gridPane, ++gridRow,
-                Res.get("dao.proposal.display.txId"), "").second;
+        if (!isMakeProposalScreen)
+            txIdTextField = addLabelTxIdTextField(gridPane, ++gridRow,
+                    Res.get("dao.proposal.display.txId"), "").second;
     }
 
     public void fillWithData(ProposalPayload proposalPayload) {
@@ -120,9 +128,10 @@ public class ProposalDisplay {
         if (proposalPayload instanceof CompensationRequestPayload) {
             CompensationRequestPayload compensationRequestPayload = (CompensationRequestPayload) proposalPayload;
             Objects.requireNonNull(requestedBsqTextField).setText(bsqFormatter.formatCoinWithCode(compensationRequestPayload.getRequestedBsq()));
-            bsqAddressTextField.setText(compensationRequestPayload.getBsqAddress());
+            Objects.requireNonNull(bsqAddressTextField).setText(compensationRequestPayload.getBsqAddress());
         }
-        txIdTextField.setup(proposalPayload.getTxId());
+        if (txIdTextField != null)
+            txIdTextField.setup(proposalPayload.getTxId());
     }
 
     public void clearForm() {
@@ -136,7 +145,8 @@ public class ProposalDisplay {
             requestedBsqTextField.clear();
         if (bsqAddressTextField != null)
             bsqAddressTextField.clear();
-        txIdTextField.cleanup();
+        if (txIdTextField != null)
+            txIdTextField.cleanup();
     }
 
     public void fillWithMock() {
