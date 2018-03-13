@@ -17,7 +17,6 @@
 
 package bisq.desktop.util.validation;
 
-
 import bisq.desktop.util.validation.altcoins.ByteballAddressValidator;
 import bisq.desktop.util.validation.altcoins.NxtReedSolomonValidator;
 import bisq.desktop.util.validation.altcoins.OctocoinAddressValidator;

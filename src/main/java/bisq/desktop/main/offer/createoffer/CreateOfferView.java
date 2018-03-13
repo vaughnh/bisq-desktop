@@ -173,7 +173,6 @@ public class CreateOfferView extends ActivatableViewAndModel<AnchorPane, CreateO
     private boolean clearXchangeWarningDisplayed, isActivated;
     private ChangeListener<Boolean> getShowWalletFundedNotificationListener;
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Constructor, lifecycle
     ///////////////////////////////////////////////////////////////////////////////////////////

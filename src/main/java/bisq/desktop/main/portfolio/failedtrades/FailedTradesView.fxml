@@ -39,6 +39,4 @@
             <TableColumn fx:id="stateColumn" minWidth="80"/>
         </columns>
     </TableView>
-
-
 </VBox>

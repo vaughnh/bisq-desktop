@@ -32,7 +32,6 @@ import java.util.Locale;
 
 import javax.annotation.Nullable;
 
-
 public class WMCCAddressValidator {
     public static ValidationResult ValidateAddress(NetworkParameters params, String address) {
         if (!isLowerCase(address)) {

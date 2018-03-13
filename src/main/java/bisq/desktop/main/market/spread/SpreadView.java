@@ -57,7 +57,6 @@ public class SpreadView extends ActivatableViewAndModel<GridPane, SpreadViewMode
     private ListChangeListener<SpreadItem> itemListChangeListener;
     private TableColumn<SpreadItem, SpreadItem> totalAmountColumn, numberOfOffersColumn, numberOfBuyOffersColumn, numberOfSellOffersColumn;
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Constructor, lifecycle
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +135,6 @@ public class SpreadView extends ActivatableViewAndModel<GridPane, SpreadViewMode
         numberOfSellOffersColumn.setGraphic(new AutoTooltipLabel((Res.get("market.spread.numberOfSellOffersColumn", numberOfSellOffers))));
         totalAmountColumn.setGraphic(new AutoTooltipLabel(Res.get("market.spread.totalAmountColumn", total)));
     }
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Columns

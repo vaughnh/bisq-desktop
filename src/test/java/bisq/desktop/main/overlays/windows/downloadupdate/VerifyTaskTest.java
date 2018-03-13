@@ -1,9 +1,5 @@
-package bisq.desktop.main.overlays.windows.downloadupdate;
-
-import org.junit.Test;
-
 /*
- * This file is part of bisq.
+ * This file is part of Bisq.
  *
  * bisq is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
@@ -18,9 +14,14 @@ import org.junit.Test;
  * You should have received a copy of the GNU Affero General Public License
  * along with bisq. If not, see <http://www.gnu.org/licenses/>.
  */
+
+package bisq.desktop.main.overlays.windows.downloadupdate;
+
+import org.junit.Test;
+
 public class VerifyTaskTest {
+
     @Test
     public void call() throws Exception {
     }
-
 }

@@ -80,7 +80,6 @@ import java.util.stream.Collectors;
 @FxmlView
 public class NetworkSettingsView extends ActivatableViewAndModel<GridPane, Activatable> {
 
-
     @FXML
     TitledGroupBg p2pHeader, btcHeader;
     @FXML

@@ -123,7 +123,6 @@ public class PreferencesView extends ActivatableViewAndModel<GridPane, Activatab
     private ChangeListener<Boolean> useCustomFeeCheckboxListener;
     private ChangeListener<Number> transactionFeeChangeListener;
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Constructor, initialisation
     ///////////////////////////////////////////////////////////////////////////////////////////

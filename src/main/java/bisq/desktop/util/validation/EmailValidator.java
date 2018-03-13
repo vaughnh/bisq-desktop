@@ -17,6 +17,8 @@
 
 package bisq.desktop.util.validation;
 
+import bisq.common.locale.Res;
+
 /*
  * Mail addresses consist of localPart @ domainPart
  *
@@ -31,11 +33,7 @@ package bisq.desktop.util.validation;
  * name can but usually doesn't (compatibility reasons) contain non-ASCII
  * symbols.
  * TLD is at least two letters long
- *
  */
-
-import bisq.common.locale.Res;
-
 public final class EmailValidator extends InputValidator {
 
     ///////////////////////////////////////////////////////////////////////////////////////////

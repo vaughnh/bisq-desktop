@@ -75,8 +75,8 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 class TradesChartsViewModel extends ActivatableViewModel {
-    private static final int TAB_INDEX = 2;
 
+    private static final int TAB_INDEX = 2;
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Enum
