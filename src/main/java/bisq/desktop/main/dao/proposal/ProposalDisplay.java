@@ -28,6 +28,7 @@ import bisq.desktop.util.validation.BsqValidator;
 
 import bisq.core.btc.wallet.BsqWalletService;
 import bisq.core.dao.proposal.ProposalPayload;
+import bisq.core.dao.proposal.ProposalRestrictions;
 import bisq.core.dao.proposal.ProposalType;
 import bisq.core.dao.proposal.compensation.CompensationRequestPayload;
 import bisq.core.dao.proposal.compensation.consensus.Restrictions;
@@ -51,6 +52,9 @@ import javax.annotation.Nullable;
 
 import static bisq.desktop.util.FormBuilder.*;
 
+// TODO add listener for descriptionTextArea and restrict size of 100 chars. show popup if exceeds.
+// we store data locally so we want to keep it small. external link is intended for more info....
+// use ProposalRestrictions.getMaxLengthDescriptionText()
 public class ProposalDisplay {
     private final GridPane gridPane;
     private BsqFormatter bsqFormatter;
@@ -85,7 +89,7 @@ public class ProposalDisplay {
         uidTextField.setEditable(false);
         nameTextField = addLabelInputTextField(gridPane, ++gridRow, Res.get("dao.proposal.display.name")).second;
         titleTextField = addLabelInputTextField(gridPane, ++gridRow, Res.get("dao.proposal.display.title")).second;
-        descriptionTextArea = addLabelTextArea(gridPane, ++gridRow, Res.get("dao.proposal.display.description"), Res.get("dao.proposal.display.description.prompt")).second;
+        descriptionTextArea = addLabelTextArea(gridPane, ++gridRow, Res.get("dao.proposal.display.description"), Res.get("dao.proposal.display.description.prompt", ProposalRestrictions.getMaxLengthDescriptionText())).second;
         linkInputTextField = addLabelInputTextField(gridPane, ++gridRow, Res.get("dao.proposal.display.link")).second;
         linkHyperlinkWithIcon = addLabelHyperlinkWithIcon(gridPane, gridRow, Res.get("dao.proposal.display.link"), "", "").second;
         linkHyperlinkWithIcon.setVisible(false);
