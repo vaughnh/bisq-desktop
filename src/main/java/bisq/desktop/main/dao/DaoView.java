@@ -67,7 +67,7 @@ public class DaoView extends ActivatableViewAndModel<TabPane, Activatable> {
 
     @Override
     public void initialize() {
-        compensationTab = new Tab(Res.get("dao.tab.requests"));
+        compensationTab = new Tab(Res.get("dao.tab.proposals"));
         votingTab = new Tab(Res.get("dao.tab.voting"));
         compensationTab.setClosable(false);
         votingTab.setClosable(false);
